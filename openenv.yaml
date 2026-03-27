@@ -1,0 +1,76 @@
+name: code-review-env
+version: "1.0.0"
+description: >
+  A real-world code review environment where an AI agent inspects code snippets,
+  identifies bugs, security issues, and style violations, then suggests fixes.
+  Tasks range from simple syntax errors to complex logic bugs and security vulnerabilities.
+author: Shaik Shahid
+tags:
+  - code-review
+  - software-engineering
+  - real-world
+  - debugging
+  - security
+
+observation_space:
+  type: object
+  properties:
+    task_id:
+      type: string
+      description: Unique identifier for the current task
+    difficulty:
+      type: string
+      enum: [easy, medium, hard]
+    code_snippet:
+      type: string
+      description: The code snippet to review
+    language:
+      type: string
+      description: Programming language of the snippet
+    instructions:
+      type: string
+      description: What the agent should look for and report
+    step_count:
+      type: integer
+    max_steps:
+      type: integer
+    history:
+      type: array
+      description: Previous actions taken in this episode
+
+action_space:
+  type: object
+  properties:
+    review:
+      type: string
+      description: The agent's code review — must identify issues and suggest fixes
+    issues_found:
+      type: array
+      description: List of specific issues identified (line numbers, descriptions)
+    suggested_fix:
+      type: string
+      description: Corrected version of the code or specific fix instructions
+
+reward_range: [0.0, 1.0]
+
+tasks:
+  - id: task_easy
+    name: Syntax & Simple Bug Detection
+    difficulty: easy
+    description: Find obvious syntax errors and simple bugs in Python code
+  - id: task_medium
+    name: Logic Bug Detection
+    difficulty: medium
+    description: Identify subtle logic errors that cause incorrect behavior
+  - id: task_hard
+    name: Security Vulnerability Review
+    difficulty: hard
+    description: Detect security vulnerabilities including injection, auth bypass, and data exposure
+
+endpoints:
+  reset: POST /reset
+  step: POST /step
+  state: GET /state
+  health: GET /health
+
+huggingface_space: true
