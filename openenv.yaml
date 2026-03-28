@@ -66,6 +66,14 @@ tasks:
     name: Security Vulnerability Review
     difficulty: hard
     description: Detect security vulnerabilities including injection, auth bypass, and data exposure
+  - id: task_very_hard
+    name: Concurrency & Resource Leak Review
+    difficulty: very_hard
+    description: Find race conditions, thread-safety issues, and resource leaks in multi-threaded code
+  - id: task_expert
+    name: Performance & Algorithm Review
+    difficulty: expert
+    description: Identify O(n²) algorithms, N+1 query problems, mutable default args, and sorting bugs
 
 endpoints:
   reset: POST /reset

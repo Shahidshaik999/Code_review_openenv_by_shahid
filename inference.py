@@ -29,7 +29,7 @@ MAX_STEPS = 3
 TEMPERATURE = 0.2
 MAX_TOKENS = 800
 
-TASK_IDS = ["task_easy", "task_medium", "task_hard"]
+TASK_IDS = ["task_easy", "task_medium", "task_hard", "task_very_hard", "task_expert"]
 
 SYSTEM_PROMPT = """You are an expert software engineer performing a code review.
 When given a code snippet, you must:
@@ -206,7 +206,7 @@ def main():
     print("BASELINE SCORES")
     print(f"{'='*60}")
     for task_id, score in scores.items():
-        difficulty = {"task_easy": "easy", "task_medium": "medium", "task_hard": "hard"}[task_id]
+        difficulty = {"task_easy": "easy", "task_medium": "medium", "task_hard": "hard", "task_very_hard": "very_hard", "task_expert": "expert"}[task_id]
         print(f"  {task_id} ({difficulty:6s}): {score:.3f}")
     avg = sum(scores.values()) / len(scores)
     print(f"  {'AVERAGE':20s}: {avg:.3f}")

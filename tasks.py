@@ -81,6 +81,149 @@ def get_order_count(orders):
         "max_steps": 3,
     },
 
+    "task_very_hard": {
+        "id": "task_very_hard",
+        "difficulty": "very_hard",
+        "language": "python",
+        "instructions": (
+            "Review this multi-class Python codebase. "
+            "Find all cross-class bugs, race conditions, resource leaks, "
+            "and design flaws. Explain how each bug manifests at runtime and provide fixes."
+        ),
+        "code_snippet": """\
+import threading
+import time
+
+class DatabasePool:
+    def __init__(self, size=5):
+        self.size = size
+        self.connections = []
+        self.lock = threading.Lock()
+        for _ in range(size):
+            self.connections.append({"id": _, "in_use": False})
+
+    def get_connection(self):
+        for conn in self.connections:       # line 13: no lock held — race condition
+            if not conn["in_use"]:
+                conn["in_use"] = True
+                return conn
+        return None                         # line 17: returns None silently, no error
+
+    def release_connection(self, conn):
+        conn["in_use"] = False              # line 20: no lock — race condition
+
+
+class DataProcessor:
+    def __init__(self):
+        self.pool = DatabasePool()
+        self.results = []
+
+    def process(self, items):
+        threads = []
+        for item in items:
+            t = threading.Thread(target=self._worker, args=(item,))
+            threads.append(t)
+            t.start()
+        # line 34: never joins threads — results may be incomplete
+        return self.results
+
+    def _worker(self, item):
+        conn = self.pool.get_connection()
+        try:
+            time.sleep(0.01)
+            result = item * 2
+            self.results.append(result)     # line 42: list append not thread-safe
+        finally:
+            if conn:
+                self.pool.release_connection(conn)
+            # line 45: file handle never opened but pattern shows missing close
+
+    def process_file(self, filepath):
+        f = open(filepath, 'r')             # line 48: file never closed — resource leak
+        data = f.read()
+        return data.split('\\n')
+""",
+        "required_keywords": [
+            "race condition", "lock", "thread-safe", "join", "resource leak",
+            "file", "close", "none", "append"
+        ],
+        "partial_keywords": [
+            "threading", "concurrent", "deadlock", "pool", "connection",
+            "line 13", "line 20", "line 34", "line 42", "line 48",
+            "bug", "fix", "unsafe", "leak"
+        ],
+        "max_steps": 3,
+    },
+
+    "task_expert": {
+        "id": "task_expert",
+        "difficulty": "expert",
+        "language": "python",
+        "instructions": (
+            "Perform an expert-level performance and correctness review. "
+            "Identify all algorithmic inefficiencies (Big-O problems), memory issues, "
+            "and correctness bugs. For each issue state the current complexity, "
+            "the optimal complexity, and provide the optimized solution."
+        ),
+        "code_snippet": """\
+def find_duplicates(arr):
+    \"\"\"Return all duplicate values in the list.\"\"\"
+    duplicates = []
+    for i in range(len(arr)):               # line 4: O(n²) — should be O(n)
+        for j in range(len(arr)):
+            if i != j and arr[i] == arr[j]:
+                if arr[i] not in duplicates:
+                    duplicates.append(arr[i])
+    return duplicates
+
+
+def flatten_nested(nested, result=None):   # line 11: mutable default argument bug
+    \"\"\"Flatten a nested list.\"\"\"
+    if result is None:
+        result = []
+    for item in nested:
+        if isinstance(item, list):
+            flatten_nested(item, result)
+        else:
+            result.append(item)
+    return result
+
+
+def get_user_data(user_ids):
+    \"\"\"Fetch user records for a list of IDs.\"\"\"
+    db = connect_to_db()
+    results = []
+    for uid in user_ids:
+        user = db.query(f"SELECT * FROM users WHERE id={uid}")  # line 27: N+1 query problem
+        results.append(user)
+    return results
+
+
+def count_words(text):
+    \"\"\"Count frequency of each word.\"\"\"
+    counts = {}
+    words = text.lower().split()
+    for word in words:
+        if word in counts:
+            counts[word] += 1
+        else:
+            counts[word] = 1              # line 39: correct but verbose — should use Counter or defaultdict
+    word_list = list(counts.items())
+    word_list.sort(key=lambda x: x[1])   # line 41: ascending sort — likely wants descending
+    return word_list
+""",
+        "required_keywords": [
+            "o(n²)", "o(n)", "set", "n+1", "query", "mutable default",
+            "sort", "descending", "complexity", "performance"
+        ],
+        "partial_keywords": [
+            "inefficient", "optimize", "algorithm", "line 4", "line 11", "line 27",
+            "line 41", "duplicate", "flatten", "counter", "defaultdict",
+            "database", "batch", "fix", "bug"
+        ],
+        "max_steps": 3,
+    },
+
     "task_hard": {
         "id": "task_hard",
         "difficulty": "hard",
