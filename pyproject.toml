@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "code-review-openenv"
+version = "1.0.0"
+description = "A real-world OpenEnv environment for AI-driven code review"
+authors = [
+    {name = "Shaik Shahid"}
+]
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi==0.111.0",
+    "uvicorn[standard]==0.29.0",
+    "python-dotenv==1.0.1",
+    "pydantic==2.7.1",
+    "openai>=1.52.0",
+    "requests>=2.31.0",
+]
+
+[project.urls]
+Homepage = "https://huggingface.co/spaces/shahidshaik9/code-review-openenv"
+Repository = "https://github.com/Shahidshaik999/Code_review_openenv_by_shahid"
+
+[tool.openenv]
+name = "code-review-env"
+version = "1.0.0"
+entry = "app:app"
+port = 7860
