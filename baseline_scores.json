@@ -1,9 +1,11 @@
 {
   "scores": {
-    "task_easy": 0.942,
-    "task_medium": 0.961,
-    "task_hard": 0.993
+    "task_easy": 1.0,
+    "task_medium": 1.0,
+    "task_hard": 1.0,
+    "task_very_hard": 0.875,
+    "task_expert": 0.98
   },
-  "average": 0.9653333333333333,
+  "average": 0.9710000000000001,
   "model": "meta-llama/Llama-3.3-70B-Instruct"
 }

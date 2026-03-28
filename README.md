@@ -46,6 +46,8 @@ The agent receives a buggy code snippet, analyzes it, identifies the problems, a
 | `task_easy` | Easy | Operator bug (`=+` vs `+=`), ZeroDivisionError, type concatenation error |
 | `task_medium` | Medium | Accumulation bug, counter never increments, discount logic error |
 | `task_hard` | Hard | SQL injection (2 places), MD5 weak hashing, hardcoded secret key, env vars exposed, no auth check, full data exposure |
+| `task_very_hard` | Very Hard | Race conditions, missing thread locks, thread-unsafe list append, missing thread joins, file resource leak |
+| `task_expert` | Expert | O(n²) duplicate finder, N+1 database query, mutable default argument bug, wrong sort order |
 
 Each task has a **deterministic grader** — it checks whether the agent's review contains the key terms that prove it found the real issues. No LLM judging, no subjectivity.
 
@@ -124,10 +126,12 @@ Score range: 0.0 (found nothing) to 1.0 (found everything perfectly).
 Model used: `meta-llama/Llama-3.3-70B-Instruct` via HF Inference API
 
 ```
-task_easy   (easy  ): 1.000
-task_medium (medium): 0.961
-task_hard   (hard  ): 0.993
-AVERAGE              : 0.981
+task_easy      (easy     ): 1.000
+task_medium    (medium   ): 1.000
+task_hard      (hard     ): 1.000
+task_very_hard (very_hard): 0.875
+task_expert    (expert   ): 0.980
+AVERAGE                   : 0.971
 ```
 
 ---
