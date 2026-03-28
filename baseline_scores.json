@@ -1,0 +1,9 @@
+{
+  "scores": {
+    "task_easy": 1.0,
+    "task_medium": 0.95,
+    "task_hard": 0.993
+  },
+  "average": 0.981,
+  "model": "meta-llama/Llama-3.3-70B-Instruct"
+}

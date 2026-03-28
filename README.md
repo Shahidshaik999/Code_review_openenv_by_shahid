@@ -111,10 +111,10 @@ python inference.py
 
 Expected output:
 ```
-task_easy   (easy  ): 0.650
-task_medium (medium): 0.520
-task_hard   (hard  ): 0.410
-AVERAGE              : 0.527
+task_easy   (easy  ): 1.000
+task_medium (medium): 0.950
+task_hard   (hard  ): 0.993
+AVERAGE              : 0.981
 ```
 
 ---
