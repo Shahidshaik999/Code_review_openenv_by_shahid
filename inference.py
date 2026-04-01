@@ -21,8 +21,11 @@ load_dotenv()
 # Config
 # ---------------------------------------------------------------------------
 API_BASE_URL = os.getenv("API_BASE_URL", "https://router.huggingface.co/v1")
-API_KEY = os.getenv("HF_TOKEN") or os.getenv("OPENAI_API_KEY") or os.getenv("API_KEY", "")
 MODEL_NAME = os.getenv("MODEL_NAME", "meta-llama/Llama-3.3-70B-Instruct")
+HF_TOKEN = os.getenv("HF_TOKEN")
+if HF_TOKEN is None:
+    raise ValueError("HF_TOKEN environment variable is required")
+API_KEY = HF_TOKEN
 ENV_BASE_URL = os.getenv("ENV_BASE_URL", "http://localhost:7860")
 BENCHMARK = "code-review-openenv"
 
@@ -197,10 +200,6 @@ def run_task(client: OpenAI, task_id: str) -> float:
 # ---------------------------------------------------------------------------
 
 def main():
-    if not API_KEY:
-        print("ERROR: HF_TOKEN or OPENAI_API_KEY not set.", flush=True)
-        sys.exit(1)
-
     try:
         resp = requests.get(f"{ENV_BASE_URL}/health", timeout=10)
         resp.raise_for_status()
