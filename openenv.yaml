@@ -20,7 +20,7 @@ observation_space:
       description: Unique identifier for the current task
     difficulty:
       type: string
-      enum: [easy, medium, hard]
+      enum: [easy, medium, hard, very_hard, expert]
     code_snippet:
       type: string
       description: The code snippet to review
