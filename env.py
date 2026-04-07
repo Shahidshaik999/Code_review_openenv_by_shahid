@@ -90,10 +90,10 @@ class CodeReviewEnv:
                 step_bonus = round((raw_score - prev_score) * 0.1, 3)
 
         final_reward_value = round(
-            min(0.999, max(0.001, raw_score + step_bonus + loop_penalty)), 3
+            min(0.995, max(0.005, raw_score + step_bonus + loop_penalty)), 3
         )
         self._cumulative_reward = round(
-            min(0.999, self._cumulative_reward + final_reward_value * 0.5), 3
+            min(0.995, self._cumulative_reward + final_reward_value * 0.5), 3
         )
 
         reward = Reward(
