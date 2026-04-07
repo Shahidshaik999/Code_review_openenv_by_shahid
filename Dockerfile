@@ -1,4 +1,4 @@
-FROM python:3.11-slim-bullseye
+FROM python:3.11-slim
 
 RUN useradd -m -u 1000 user
 USER user
@@ -18,5 +18,7 @@ COPY --chown=user openenv.yaml .
 COPY --chown=user inference.py .
 COPY --chown=user README.md .
 COPY --chown=user server/ ./server/
+
+EXPOSE 7860
 
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "7860"]
