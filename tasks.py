@@ -348,7 +348,7 @@ def grade_action(task_id: str, action_text: str, issues_found: List[str]) -> Dic
     raw_score = base_score + fix_bonus
 
     # CRITICAL: score must be strictly between 0 and 1 (never 0.0 or 1.0)
-    final_score = round(min(0.995, max(0.005, raw_score)), 3)
+    final_score = round(min(0.949, max(0.051, raw_score)), 3)
 
     req_found = [kw for kw in task["required_keywords"] if kw.lower() in combined_text.lower()]
     req_missing = [kw for kw in task["required_keywords"] if kw.lower() not in combined_text.lower()]
