@@ -8,7 +8,7 @@ WORKDIR /app
 
 COPY --chown=user requirements.txt .
 COPY --chown=user pyproject.toml .
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY --chown=user app.py .
 COPY --chown=user env.py .
