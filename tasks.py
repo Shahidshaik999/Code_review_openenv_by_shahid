@@ -317,11 +317,11 @@ def _keyword_score(text: str, required: List[str], partial: List[str]) -> float:
 
 def grade_action(task_id: str, action_text: str, issues_found: List[str]) -> Dict[str, Any]:
     """
-    Deterministic grader. Returns score 0.0–1.0 and breakdown.
+    Deterministic grader. Returns score strictly between 0.0 and 1.0 (exclusive).
     """
     task = TASKS.get(task_id)
     if not task:
-        return {"score": 0.0, "breakdown": {}, "feedback": "Unknown task."}
+        return {"score": 0.05, "breakdown": {}, "feedback": "Unknown task."}
 
     combined_text = action_text + " " + " ".join(issues_found)
 
@@ -345,7 +345,10 @@ def grade_action(task_id: str, action_text: str, issues_found: List[str]) -> Dic
     # Bonus: agent provided a suggested fix
     fix_bonus = 0.05 if "fix" in combined_text.lower() or "suggest" in combined_text.lower() else 0.0
 
-    final_score = round(min(0.999, max(0.001, base_score + fix_bonus)), 3)
+    raw_score = base_score + fix_bonus
+
+    # CRITICAL: score must be strictly between 0 and 1 (never 0.0 or 1.0)
+    final_score = round(min(0.995, max(0.005, raw_score)), 3)
 
     req_found = [kw for kw in task["required_keywords"] if kw.lower() in combined_text.lower()]
     req_missing = [kw for kw in task["required_keywords"] if kw.lower() not in combined_text.lower()]
