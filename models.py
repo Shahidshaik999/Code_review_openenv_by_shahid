@@ -23,9 +23,16 @@ class Action(BaseModel):
 
 
 class Reward(BaseModel):
-    value: float = Field(..., gt=0.0, lt=1.0)
+    value: float = Field(..., ge=0.0, le=1.0)
     breakdown: Dict[str, float] = Field(default_factory=dict)
     feedback: str = ""
+
+    def model_post_init(self, __context):
+        # Ensure strictly between 0 and 1 — clamp at model level
+        if self.value <= 0.0:
+            object.__setattr__(self, 'value', 0.051)
+        elif self.value >= 1.0:
+            object.__setattr__(self, 'value', 0.949)
 
 
 class StepResult(BaseModel):
