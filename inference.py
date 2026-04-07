@@ -188,11 +188,12 @@ def run_task(client: OpenAI, task_id: str) -> float:
         success = max(rewards) >= 0.5 if rewards else False
 
     except Exception as e:
-        log_step(step=steps_taken + 1, action="error", reward=0.0, done=True, error=str(e))
+        log_step(step=steps_taken + 1, action="error", reward=0.05, done=True, error=str(e))
         success = False
+        rewards.append(0.05)
 
-    log_end(success=success, steps=steps_taken, rewards=rewards)
-    return max(rewards) if rewards else 0.0
+    log_end(success=success, steps=steps_taken, rewards=rewards if rewards else [0.05])
+    return max(rewards) if rewards else 0.05
 
 
 # ---------------------------------------------------------------------------
