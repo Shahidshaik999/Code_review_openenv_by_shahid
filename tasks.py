@@ -345,7 +345,7 @@ def grade_action(task_id: str, action_text: str, issues_found: List[str]) -> Dic
     # Bonus: agent provided a suggested fix
     fix_bonus = 0.05 if "fix" in combined_text.lower() or "suggest" in combined_text.lower() else 0.0
 
-    final_score = round(min(1.0, max(0.0, base_score + fix_bonus)), 3)
+    final_score = round(min(0.999, max(0.001, base_score + fix_bonus)), 3)
 
     req_found = [kw for kw in task["required_keywords"] if kw.lower() in combined_text.lower()]
     req_missing = [kw for kw in task["required_keywords"] if kw.lower() not in combined_text.lower()]
