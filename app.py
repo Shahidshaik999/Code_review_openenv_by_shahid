@@ -51,7 +51,7 @@ async def root():
             "health": "GET /health",
             "docs": "/docs",
         },
-        "tasks": ["task_easy", "task_medium", "task_hard"],
+        "tasks": ["task_easy", "task_medium", "task_hard", "task_very_hard", "task_expert"],
     }
 
 

@@ -23,7 +23,7 @@ class Action(BaseModel):
 
 
 class Reward(BaseModel):
-    value: float = Field(..., ge=0.0, le=1.0)
+    value: float = Field(..., gt=0.0, lt=1.0)
     breakdown: Dict[str, float] = Field(default_factory=dict)
     feedback: str = ""
 
