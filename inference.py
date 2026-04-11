@@ -33,7 +33,7 @@ MAX_STEPS = 3
 TEMPERATURE = 0.2
 MAX_TOKENS = 800
 
-TASK_IDS = ["task_easy", "task_medium", "task_hard", "task_very_hard", "task_expert"]
+TASK_IDS = ["task_easy", "task_medium", "task_hard"]
 
 SYSTEM_PROMPT = """You are an expert software engineer performing a code review.
 When given a code snippet, you must:
