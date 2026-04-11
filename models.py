@@ -27,12 +27,11 @@ class Reward(BaseModel):
     breakdown: Dict[str, float] = Field(default_factory=dict)
     feedback: str = ""
 
-    def model_post_init(self, __context):
-        # Ensure strictly between 0 and 1 — clamp at model level
-        if self.value <= 0.0:
-            object.__setattr__(self, 'value', 0.051)
-        elif self.value >= 1.0:
-            object.__setattr__(self, 'value', 0.949)
+    @classmethod
+    def create(cls, value: float, breakdown: dict = None, feedback: str = "") -> "Reward":
+        """Factory that ensures value is strictly between 0 and 1."""
+        safe_value = round(min(0.949, max(0.051, float(value))), 3)
+        return cls(value=safe_value, breakdown=breakdown or {}, feedback=feedback)
 
 
 class StepResult(BaseModel):

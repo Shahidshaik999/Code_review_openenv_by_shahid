@@ -96,7 +96,7 @@ class CodeReviewEnv:
             min(0.949, self._cumulative_reward + final_reward_value * 0.5), 3
         )
 
-        reward = Reward(
+        reward = Reward.create(
             value=final_reward_value,
             breakdown={
                 **grade["breakdown"],
