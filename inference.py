@@ -67,7 +67,10 @@ def log_step(step: int, action: str, reward: float, done: bool, error: Optional[
 
 def log_end(success: bool, steps: int, rewards: List[float]) -> None:
     rewards_str = ",".join(f"{r:.2f}" for r in rewards)
-    print(f"[END] success={str(success).lower()} steps={steps} rewards={rewards_str}", flush=True)
+    # score = average of rewards, clamped strictly between 0 and 1
+    score = sum(rewards) / len(rewards) if rewards else 0.05
+    score = round(min(0.95, max(0.05, score)), 2)
+    print(f"[END] success={str(success).lower()} steps={steps} score={score:.2f} rewards={rewards_str}", flush=True)
 
 
 # ---------------------------------------------------------------------------
